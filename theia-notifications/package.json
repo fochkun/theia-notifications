@@ -9,9 +9,11 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "1.73.1"
+    "@theia/core": "1.73.1",
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
+    "@types/uuid": "^11.0.0",
     "rimraf": "^5.0.0",
     "typescript": "~5.4.5"
   },
@@ -23,7 +25,8 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/theia-notifications-frontend-module"
+      "frontend": "lib/browser/notification-frontend-module",
+      "backend": "lib/node/notification-backend-module"
     }
   ]
 }

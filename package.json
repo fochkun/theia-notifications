@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "engines": {
+    "node": ">=18",
+    "npm": ">=8"
+  },
+  "scripts": {
+    "build:browser": "npm --prefix browser-app run bundle",
+    "build:electron": "npm --prefix electron-app run bundle",
+    "prepare": "lerna run prepare",
+    "postinstall": "theia check:theia-version",
+    "start:browser": "npm --prefix browser-app start",
+    "start:electron": "npm --prefix electron-app start",
+    "watch:browser": "lerna run --parallel watch --ignore electron-app",
+    "watch:electron": "lerna run --parallel watch --ignore browser-app"
+  },
+  "devDependencies": {
+    "lerna": "2.4.0",
+    
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1"
+  },
+  "workspaces": [
+    "theia-notifications", "browser-app", "electron-app"
+  ],
+  "resolutions": {
+    "native-keymap": "npm:empty-npm-package@1.0.0",
+    "drivelist": "npm:empty-npm-package@1.0.0"
+   }
+}

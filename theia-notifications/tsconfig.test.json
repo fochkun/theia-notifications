@@ -1,0 +1,23 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2019",
+        "jsx": "react",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "types": ["node", "mocha", "chai"],
+        "noUnusedLocals": false,
+        "skipLibCheck": true
+    },
+    "ts-node": {
+        "files": true,
+        "compilerOptions": {
+            "module": "commonjs",
+            "jsx": "react"
+        }
+    },
+    "include": [
+        "src"
+    ]
+}

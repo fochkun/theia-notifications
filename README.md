@@ -1,80 +1,106 @@
 # theia-notifications
-The example of how to build the Theia-based applications with the theia-notifications.
 
-## Getting started
+Система уведомлений для Eclipse Theia: всплывающие тосты, боковая панель с историей, персистентное хранение и RPC-коммуникация между frontend и backend.
 
-Please install all necessary [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites).
+## Функциональность
 
-## Running the browser example
+- **Тосты** — всплывающие уведомления в правом нижнем углу (info / warning / error)
+  - Автозакрытие через 5 секунд для info и warning
+  - Error остаётся до явного закрытия
+  - Кнопки действий (actions) с отправкой события на backend
+- **Боковая панель** — история уведомлений в правом сайдбаре (иконка 🔔)
+  - Фильтрация по severity: All / Info / Warning / Error
+  - Группировка по датам: Сегодня / Вчера / Ранее
+  - Кнопка «Clear All» для очистки истории
+  - Обновление в реальном времени при новых уведомлениях
+- **Персистентность** — история сохраняется в `<workspace>/.theia-notifications/history.json` и восстанавливается после перезапуска
+- **RPC** — двусторонняя коммуникация frontend ↔ backend через `RpcConnectionHandler`
 
-    npm run build:browser
-    npm run start:browser
+## Требования
 
-*or:*
+- **Node.js >= 22**
+- **Yarn >= 1.7.0**
 
-    npm run build:browser
-    cd browser-app
-    npm start
+## Установка и сборка
 
-*or:* launch `Start Browser Backend` configuration from VS code.
+```bash
+# 1. Установить зависимости
+yarn install
 
-Open http://localhost:3000 in the browser.
+# 2. Скопировать конфигурацию esbuild для CSS Modules
+#    (browser-app в .gitignore, поэтому файл хранится в корне)
+cp replace.esbuild.mjs browser-app/esbuild.mjs
 
-## Running the Electron example
+# 3. Собрать проект
+yarn build:browser
+```
 
-    npm run build:electron
-    npm run start:electron
+## Запуск
 
-*or:*
+```bash
+yarn start:browser
+```
+Открыть в браузере: http://localhost:3000
+##Тестирование
+```bash
+yarn test
+```
+## Архитектура
+┌─────────────────────────────────────────────────────┐
+│                   Frontend (Browser)                 │
+│                                                     │
+│  NotificationTestContribution (команды)              │
+│         │                                           │
+│         ▼                                           │
+│  NotificationFrontendService (фасад)                 │
+│    ├── NotificationClientImpl (приём событий)        │
+│    └── RPC-прокси → NotificationService              │
+│         │                                           │
+│    ┌────┴────────────────┐                          │
+│    ▼                     ▼                          │
+│  ToastManager      PanelWidget (React)              │
+│    │                     │                          │
+│  Toast (React)     PanelView + PanelItem            │
+└────────────────────┬────────────────────────────────┘
+                     │ WebSocket + JSON-RPC
+                     ▼
+┌─────────────────────────────────────────────────────┐
+│                   Backend (Node.js)                  │
+│                                                     │
+│  NotificationServiceImpl (бизнес-логика)             │
+│    └── NotificationHistoryService (JSON на диске)    │
+└─────────────────────────────────────────────────────┘
 
-    npm run build:electron
-    cd electron-app
-    npm start
+## Структура проекта
 
-*or:* launch `Start Electron Backend` configuration from VS code.
+theia-notifications/
+├── replace.esbuild.mjs              # Конфиг esbuild для CSS Modules (копировать в browser-app/)
+├── src/
+│   ├── common/
+│   │   ├── protocol.ts              # RPC-интерфейсы (NotificationService, NotificationClient)
+│   │   └── notification-types.ts    # Типы (Notification, NotificationAction, Severity)
+│   ├── node/
+│   │   ├── notification-backend-module.ts
+│   │   ├── notification-service-impl.ts
+│   │   ├── notification-history-service.ts
+│   │   └── test/                    # Backend-тесты
+│   └── browser/
+│       ├── notification-frontend-module.ts
+│       ├── notification-frontend-service.ts
+│       ├── notification-client-impl.ts
+│       ├── notification-toast-manager.ts
+│       ├── notification-toast.tsx
+│       ├── notification-toast.module.css
+│       ├── notification-test-contribution.ts
+│       ├── panel/
+│       │   ├── notification-panel-widget.tsx
+│       │   ├── notification-panel-hoc.tsx
+│       │   ├── notification-panel-view.tsx
+│       │   ├── notification-panel-item.tsx
+│       │   ├── notification-panel-contribution.ts
+│       │   ├── notification-history-service.ts
+│       │   └── notification-panel.module.css
+│       └── test/                    # Frontend-тесты
+└── browser-app/                     # Theia-приложение (в .gitignore)
+    └── esbuild.mjs                  # ← скопировать из replace.esbuild.mjs
 
-
-## Developing with the browser example
-
-Start watching all packages, including `browser-app`, of your application with
-
-    npm run watch:browser
-
-*or* watch only specific packages with
-
-    cd theia-notifications
-    npm run watch
-
-and the browser example.
-
-    cd browser-app
-    npm run watch
-
-Run the example as [described above](#Running-the-browser-example)
-## Developing with the Electron example
-
-Start watching all packages, including `electron-app`, of your application with
-
-    npm run watch:electron
-
-*or* watch only specific packages with
-
-    cd theia-notifications
-    npm run watch
-
-and the Electron example.
-
-    cd electron-app
-    npm run watch
-
-Run the example as [described above](#Running-the-Electron-example)
-
-## Publishing theia-notifications
-
-Create a npm user and login to the npm registry, [more on npm publishing](https://docs.npmjs.com/getting-started/publishing-npm-packages).
-
-    npm login
-
-Publish packages with lerna to update versions properly across local packages, [more on publishing with lerna](https://github.com/lerna/lerna#publish).
-
-    npx lerna publish

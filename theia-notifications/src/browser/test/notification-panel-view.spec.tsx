@@ -176,9 +176,14 @@ describe('NotificationPanelView', () => {
             render(
                 <NotificationPanelView {...defaultProps} notifications={notifications} />
             );
-            // Должны быть только Clear All + 4 фильтра = 5 кнопок
+            
+            // "Clear All" имеет роль button (по умолчанию)
             const buttons = screen.getAllByRole('button');
-            expect(buttons.length).to.equal(5);
+            // Фильтры имеют роль tab
+            const tabs = screen.getAllByRole('tab');
+            
+            // Итого 5 интерактивных элементов в шапке, и НИ ОДНОЙ кнопки действия внутри списка
+            expect(buttons.length + tabs.length).to.equal(5);
         });
     });
 });

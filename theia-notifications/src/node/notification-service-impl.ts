@@ -1,16 +1,21 @@
 import { injectable } from '@theia/core/shared/inversify';
-import { Emitter, Event } from '@theia/core';
-import { NotificationService } from '../common/protocol';
-import { v4 as uuidv4 } from 'uuid';
+import { NotificationService, NotificationClient } from '../common/protocol';
 import { NotificationAction, Notification } from '../common/notification-types';
+import { v4 as uuidv4 } from 'uuid';
 
 @injectable()
 export class NotificationServiceImpl implements NotificationService {
     private history: Notification[] = [];
     private readonly MAX_HISTORY = 100;
+    private client: NotificationClient | undefined;
 
-    private readonly onNotificationEmitter = new Emitter<Notification>();
-    readonly onNotification: Event<Notification> = this.onNotificationEmitter.event;
+    setClient(client: NotificationClient | undefined): void {
+        this.client = client;
+    }
+
+    getClient(): NotificationClient | undefined {
+        return this.client;
+    }
 
     async push(input: Omit<Notification, 'id' | 'timestamp'>): Promise<Notification> {
         const notification: Notification = {
@@ -25,12 +30,12 @@ export class NotificationServiceImpl implements NotificationService {
             this.history = this.history.slice(-this.MAX_HISTORY);
         }
 
-        this.onNotificationEmitter.fire(notification);
+        this.client?.onNotification(notification);
+
         return notification;
     }
 
     async getHistory(): Promise<Notification[]> {
-        // вряд ли пригодится, но на всякий случай сделаю так
         return this.history.map(n => ({ ...n }));
     }
 
@@ -39,6 +44,11 @@ export class NotificationServiceImpl implements NotificationService {
     }
 
     async clearHistory(): Promise<void> {
+        this.history = [];
+    }
+
+    dispose(): void {
+        this.client = undefined;
         this.history = [];
     }
 }

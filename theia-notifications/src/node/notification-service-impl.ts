@@ -1,11 +1,19 @@
-import { injectable } from '@theia/core/shared/inversify';
+import { injectable, inject } from '@theia/core/shared/inversify';
 import { NotificationService, NotificationClient } from '../common/protocol';
 import { NotificationAction, Notification } from '../common/notification-types';
+import { NotificationHistoryService } from './notification-history-service';
 import { v4 as uuidv4 } from 'uuid';
 
 @injectable()
 export class NotificationServiceImpl implements NotificationService {
-    private history: Notification[] = [];
+
+    @inject(NotificationHistoryService)
+    protected readonly historyService!: NotificationHistoryService;
+
+    /** История уведомлений
+     * Читается с диска один раз, потом работает из памяти
+     */
+    private history: Notification[] | undefined;
     private readonly MAX_HISTORY = 100;
     private client: NotificationClient | undefined;
 
@@ -17,26 +25,37 @@ export class NotificationServiceImpl implements NotificationService {
         return this.client;
     }
 
+    private async ensureLoaded(): Promise<Notification[]> {
+        if (this.history === undefined) {
+            this.history = await this.historyService.load();
+        }
+        return this.history;
+    }
+
     async push(input: Omit<Notification, 'id' | 'timestamp'>): Promise<Notification> {
+        const history = await this.ensureLoaded();
+
         const notification: Notification = {
             ...input,
             id: uuidv4(),
             timestamp: Date.now(),
         };
 
-        this.history.push(notification);
+        history.push(notification);
 
-        if (this.history.length > this.MAX_HISTORY) {
-            this.history = this.history.slice(-this.MAX_HISTORY);
+        if (history.length > this.MAX_HISTORY) {
+            this.history = history.slice(-this.MAX_HISTORY);
         }
 
+        await this.historyService.save(this.history!);
         this.client?.onNotification(notification);
 
         return notification;
     }
 
     async getHistory(): Promise<Notification[]> {
-        return this.history.map(n => ({ ...n }));
+        const history = await this.ensureLoaded();
+        return history.map(n => ({ ...n }));
     }
 
     async actionInvoked(notificationId: string, action: NotificationAction): Promise<void> {
@@ -45,10 +64,11 @@ export class NotificationServiceImpl implements NotificationService {
 
     async clearHistory(): Promise<void> {
         this.history = [];
+        await this.historyService.save(this.history);
     }
 
     dispose(): void {
         this.client = undefined;
-        this.history = [];
+        this.history = undefined;
     }
 }

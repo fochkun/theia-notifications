@@ -1,5 +1,6 @@
 import { injectable, inject, postConstruct } from '@theia/core/shared/inversify';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
+import { Message } from '@theia/core/lib/browser/widgets/widget';
 import { NotificationHistoryService } from './notification-history-service';
 import { NotificationPanelHOC } from './notification-panel-hoc';
 import * as React from 'react';
@@ -24,6 +25,11 @@ export class NotificationPanelWidget extends ReactWidget {
         this.title.iconClass = NOTIFICATION_PANEL_WIDGET_ICON;
         this.title.closable = true;
         this.addClass('notification-panel-widget');
+    }
+
+    protected override onAfterAttach(msg: Message): void {
+        super.onAfterAttach(msg);
+        this.update();
     }
 
     protected render(): React.ReactNode {

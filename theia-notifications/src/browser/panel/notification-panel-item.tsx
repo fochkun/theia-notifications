@@ -1,4 +1,3 @@
-// src/browser/panel/notification-panel-item.tsx
 import * as React from 'react';
 import { Notification, NotificationAction } from '../../common/notification-types';
 import styles from './notification-panel.module.css';

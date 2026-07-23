@@ -10,7 +10,6 @@ export const TOGGLE_NOTIFICATIONS_PANEL: Command = {
 
 @injectable()
 export class NotificationPanelContribution extends AbstractViewContribution<NotificationPanelWidget> {
-
     constructor() {
         super({
             widgetId: NotificationPanelWidget.ID,

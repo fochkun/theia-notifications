@@ -22,11 +22,10 @@ export class NotificationHistoryService implements Disposable {
 
         this.initializing = (async () => {
             try {
+
                 const history = await this.frontendService.getHistory();
                 this.notifications = [...history].sort((a, b) => b.timestamp - a.timestamp);
-                this.onHistoryChangedEmitter.fire(this.notifications);
             } catch (err) {
-                console.error('[NotificationHistoryService] Failed to load history:', err);
                 this.notifications = [];
             }
 
@@ -38,6 +37,7 @@ export class NotificationHistoryService implements Disposable {
             );
 
             this.initialized = true;
+            this.onHistoryChangedEmitter.fire(this.notifications);
         })();
 
         return this.initializing;
@@ -45,6 +45,11 @@ export class NotificationHistoryService implements Disposable {
 
     getNotifications(): Notification[] {
         this.ensureInitialized();
+        return this.notifications;
+    }
+
+    async requestHistory(): Promise<Notification[]> {
+        await this.ensureInitialized();
         return this.notifications;
     }
 

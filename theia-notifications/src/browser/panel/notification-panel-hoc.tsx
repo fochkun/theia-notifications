@@ -1,24 +1,37 @@
-// src/browser/panel/notification-panel-hoc.tsx
 import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { NotificationHistoryService } from './notification-history-service';
 import { NotificationPanelView, FilterType } from './notification-panel-view';
-import { NotificationAction } from '../../common/notification-types';
+import { Notification, NotificationAction } from '../../common/notification-types';
 
 interface NotificationPanelHOCProps {
     historyService: NotificationHistoryService;
 }
 
 export const NotificationPanelHOC: React.FC<NotificationPanelHOCProps> = ({ historyService }) => {
-    const [notifications, setNotifications] = useState(historyService.getNotifications());
+    const [notifications, setNotifications] = useState<Notification[]>([{id:'1', message:'test', severity: 'info', timestamp: 12345678123, title: 'hello'}]);
     const [filter, setFilter] = useState<FilterType>('all');
     const [invokedActions, setInvokedActions] = useState<Set<string>>(new Set());
 
     useEffect(() => {
+        let cancelled = false;
+
         const disposable = historyService.onHistoryChanged(newNotifications => {
-            setNotifications(newNotifications);
+            if (!cancelled) {
+                setNotifications(newNotifications);
+            }
         });
-        return () => disposable.dispose();
+
+        historyService.requestHistory().then(notifs => {
+            if (!cancelled) {
+                setNotifications(notifs);
+            }
+        });
+
+        return () => {
+            cancelled = true;
+            disposable.dispose();
+        };
     }, [historyService]);
 
     const handleClearHistory = useCallback(() => {

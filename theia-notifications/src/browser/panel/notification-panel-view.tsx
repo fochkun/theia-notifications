@@ -57,7 +57,6 @@ export const NotificationPanelView: React.FC<NotificationPanelViewProps> = ({
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <h2 className={styles.headerTitle}>🔔 Notifications</h2>
                 <button
                     className="theia-button secondary"
                     onClick={onClearHistory}

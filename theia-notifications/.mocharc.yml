@@ -4,3 +4,8 @@ require:
 spec: 'src/**/test/**/*.spec.{ts,tsx}'
 timeout: 10000
 recursive: true
+extensions:
+  - ts
+  - tsx
+node-option:
+  - 'require=ts-node/register'

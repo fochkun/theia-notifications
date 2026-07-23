@@ -16,6 +16,11 @@
         "moduleResolution": "node",
         "target": "ES2017",
         "jsx": "react",
+        "types": [
+            "node",
+            "mocha",
+            "chai"
+        ],
         "lib": [
             "ES2017",
             "dom"
@@ -26,5 +31,9 @@
     },
     "include": [
         "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "lib"
     ]
 }

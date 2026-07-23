@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Notification, NotificationAction } from '../common/notification-types';
+import { Notification, NotificationAction } from '../../common/notification-types';
 import styles from './notification-toast.module.css';
 
 interface NotificationToastProps {

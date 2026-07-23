@@ -1,8 +1,8 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { Disposable, DisposableCollection } from '@theia/core';
 import { FrontendApplicationContribution } from '@theia/core/lib/browser';
-import { NotificationFrontendService } from './notification-frontend-service';
-import { Notification, NotificationAction } from '../common/notification-types';
+import { NotificationFrontendService } from '../rpc/notification-frontend-service';
+import { Notification, NotificationAction } from '../../common/notification-types';
 import { NotificationToast } from './notification-toast';
 import * as React from 'react';
 import { createRoot, Root } from 'react-dom/client';

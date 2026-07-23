@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
 import { NotificationHistoryService } from './notification-history-service';
-import { NotificationPanelView, FilterType } from './notification-panel-view';
+import { NotificationPanelView } from './notification-panel-view';
 import { Notification, NotificationAction } from '../../common/notification-types';
+import { FilterType } from './notification-panel.types';
 
 interface NotificationPanelHOCProps {
     historyService: NotificationHistoryService;

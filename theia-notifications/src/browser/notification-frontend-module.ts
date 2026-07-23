@@ -6,10 +6,10 @@ import {
     ServiceConnectionProvider 
 } from '@theia/core/lib/browser/messaging/service-connection-provider';
 
-import { NotificationFrontendService } from './notification-frontend-service';
-import { NotificationClientImpl } from './notification-client-impl';
+import { NotificationFrontendService } from './rpc/notification-frontend-service';
+import { NotificationClientImpl } from './rpc/notification-client-impl';
 import { NotificationHistoryService } from './panel/notification-history-service';
-import { NotificationToastManager } from './notification-toast-manager';
+import { NotificationToastManager } from './toast/notification-toast-manager';
 import { NotificationTestContribution } from './notification-test-contribution';
 import { NotificationPanelWidget } from './panel/notification-panel-widget';
 import { NotificationPanelContribution } from './panel/notification-panel-contribution';

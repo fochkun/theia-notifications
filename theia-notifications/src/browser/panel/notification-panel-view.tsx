@@ -1,30 +1,10 @@
-// src/browser/panel/notification-panel-view.tsx
 import * as React from 'react';
-import { Notification, NotificationAction, NotificationSeverity } from '../../common/notification-types';
+import { Notification } from '../../common/notification-types';
 import { NotificationItem } from './notification-panel-item';
 import styles from './notification-panel.module.css';
+import { getDateGroup } from './notification-panel.utils';
+import { DateGroup, FilterType, NotificationPanelViewProps } from './notification-panel.types';
 
-export type FilterType = 'all' | NotificationSeverity;
-export type DateGroup = 'today' | 'yesterday' | 'earlier';
-
-export interface NotificationPanelViewProps {
-    notifications: Notification[];
-    filter: FilterType;
-    onFilterChange: (filter: FilterType) => void;
-    onClearHistory: () => void;
-    onActionInvoked: (notificationId: string, action: NotificationAction) => void;
-    invokedActions: Set<string>;
-}
-
-const getDateGroup = (timestamp: number): DateGroup => {
-    const now = new Date();
-    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-    const startOfYesterday = startOfToday - 24 * 60 * 60 * 1000;
-
-    if (timestamp >= startOfToday) return 'today';
-    if (timestamp >= startOfYesterday) return 'yesterday';
-    return 'earlier';
-};
 
 const GROUP_LABELS: Record<DateGroup, string> = {
     today: 'Сегодня',

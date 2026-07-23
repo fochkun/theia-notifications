@@ -1,7 +1,7 @@
 import { injectable } from '@theia/core/shared/inversify';
 import { Emitter, Event } from '@theia/core';
-import { NotificationClient } from '../common/protocol';
-import { Notification } from '../common/notification-types';
+import { NotificationClient } from '../../common/protocol';
+import { Notification } from '../../common/notification-types';
 
 @injectable()
 export class NotificationClientImpl implements NotificationClient {

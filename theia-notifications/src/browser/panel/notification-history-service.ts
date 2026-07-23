@@ -1,6 +1,6 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { Disposable, DisposableCollection, Emitter, Event } from '@theia/core';
-import { NotificationFrontendService } from '../notification-frontend-service';
+import { NotificationFrontendService } from '../rpc/notification-frontend-service';
 import { Notification, NotificationAction } from '../../common/notification-types';
 
 @injectable()

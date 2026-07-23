@@ -8,7 +8,7 @@ import {
     MessageService 
 } from '@theia/core/lib/common';
 import { CommonMenus } from '@theia/core/lib/browser';
-import { NotificationFrontendService } from './notification-frontend-service';
+import { NotificationFrontendService } from './rpc/notification-frontend-service';
 
 export const TEST_NOTIFICATION_COMMAND: Command = {
     id: 'notification.test.info',

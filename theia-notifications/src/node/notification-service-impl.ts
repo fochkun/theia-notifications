@@ -48,7 +48,9 @@ export class NotificationServiceImpl implements NotificationService {
         }
 
         await this.historyService.save(this.history!);
+        console.log(`[Backend] push() called. Client exists: ${!!this.client}`);
         this.client?.onNotification(notification);
+        console.log(`[Backend] onNotification sent to client`);
 
         return notification;
     }

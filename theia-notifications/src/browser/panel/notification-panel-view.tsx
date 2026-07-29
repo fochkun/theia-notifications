@@ -3,8 +3,7 @@ import { Notification } from '../../common/notification-types';
 import { NotificationItem } from './notification-panel-item';
 import { getDateGroup } from './notification-panel.utils';
 import { DateGroup, FilterType, NotificationPanelViewProps } from './notification-panel.types';
-import './notification-panel.module.css';
-
+import { NOTIFICATION_PANEL_CLASSES } from './notification-panel-classes';
 
 const GROUP_LABELS: Record<DateGroup, string> = {
     today: 'Сегодня',
@@ -20,8 +19,8 @@ export const NotificationPanelView: React.FC<NotificationPanelViewProps> = ({
     onActionInvoked,
     invokedActions
 }) => {
-    const filteredNotifications = filter === 'all' 
-        ? notifications 
+    const filteredNotifications = filter === 'all'
+        ? notifications
         : notifications.filter(n => n.severity === filter);
 
     const groupedNotifications: Record<DateGroup, Notification[]> = {
@@ -35,8 +34,8 @@ export const NotificationPanelView: React.FC<NotificationPanelViewProps> = ({
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
+        <div className={NOTIFICATION_PANEL_CLASSES.panel}>
+            <div className={NOTIFICATION_PANEL_CLASSES.header}>
                 <button
                     className="theia-button secondary"
                     onClick={onClearHistory}
@@ -47,13 +46,13 @@ export const NotificationPanelView: React.FC<NotificationPanelViewProps> = ({
                 </button>
             </div>
 
-            <div className={styles.filters} role="tablist" aria-label="Filter by severity">
+            <div className={NOTIFICATION_PANEL_CLASSES.filters} role="tablist" aria-label="Filter by severity">
                 {(['all', 'info', 'warning', 'error'] as FilterType[]).map(f => (
                     <button
                         key={f}
                         role="tab"
                         aria-selected={filter === f}
-                        className={`${styles.filterButton} ${filter === f ? styles.filterButtonActive : ''}`}
+                        className={`${NOTIFICATION_PANEL_CLASSES.filterButton} ${filter === f ? NOTIFICATION_PANEL_CLASSES.filterButtonActive : ''}`}
                         onClick={() => onFilterChange(f)}
                     >
                         {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
@@ -61,18 +60,18 @@ export const NotificationPanelView: React.FC<NotificationPanelViewProps> = ({
                 ))}
             </div>
 
-            <div className={styles.list}>
+            <div className={NOTIFICATION_PANEL_CLASSES.list}>
                 {notifications.length === 0 ? (
-                    <div className={styles.emptyState}>No notifications</div>
+                    <div className={NOTIFICATION_PANEL_CLASSES.emptyState}>No notifications</div>
                 ) : filteredNotifications.length === 0 ? (
-                    <div className={styles.emptyState}>No {filter} notifications</div>
+                    <div className={NOTIFICATION_PANEL_CLASSES.emptyState}>No {filter} notifications</div>
                 ) : (
                     (['today', 'yesterday', 'earlier'] as const).map(group => {
                         const items = groupedNotifications[group];
                         if (items.length === 0) return null;
                         return (
-                            <div key={group} className={styles.group}>
-                                <div className={styles.groupHeader}>{GROUP_LABELS[group]}</div>
+                            <div key={group} className={NOTIFICATION_PANEL_CLASSES.group}>
+                                <div className={NOTIFICATION_PANEL_CLASSES.groupHeader}>{GROUP_LABELS[group]}</div>
                                 {items.map(n => (
                                     <NotificationItem
                                         key={n.id}

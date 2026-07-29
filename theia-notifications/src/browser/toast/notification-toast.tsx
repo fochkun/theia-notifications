@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Notification, NotificationAction } from '../../common/notification-types';
 import { NOTIFICATION_TOAST_CLASSES } from './notification-toast-classes';
-import './notification-toast.css';
 
 interface NotificationToastProps {
     notification: Notification;
@@ -87,7 +86,7 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
             </div>
             {notification.severity === 'error' && (
                 <button
-                    className={`theia-button ${NOTIFICATION_TOAST_CLASSES.closeButton}`}
+                    className={`${NOTIFICATION_TOAST_CLASSES.closeButton}`}
                     onClick={handleClose}
                     aria-label="Close notification"
                 >

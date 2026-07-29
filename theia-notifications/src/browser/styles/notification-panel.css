@@ -1,0 +1,233 @@
+/* Корневой контейнер панели */
+.theia-notification-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: var(--theia-sideBar-background, #1e1e1e);
+    color: var(--theia-sideBar-foreground, #cccccc);
+    font-family: var(--theia-ui-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif);
+    font-size: var(--theia-ui-font-size1, 13px);
+    overflow: hidden;
+}
+
+/* Шапка */
+.theia-notification-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--theia-sideBarSectionHeader-border, var(--theia-panel-border, #454545));
+    background: var(--theia-sideBarSectionHeader-background, #252526);
+    gap: 8px;
+}
+
+/* Блок фильтров */
+.theia-notification-panel__filters {
+    display: flex;
+    gap: 2px;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--theia-panel-border, #454545);
+    background: var(--theia-editor-background, #1e1e1e);
+    flex-wrap: wrap;
+}
+
+.theia-notification-panel__filter-button {
+    flex: 1;
+    min-width: 0;
+    padding: 3px 6px;
+    font-size: 11px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: var(--theia-foreground, #cccccc);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.theia-notification-panel__filter-button:hover:not(.theia-notification-panel__filter-button--active) {
+    background: var(--theia-toolbar-hoverBackground, rgba(255, 255, 255, 0.1));
+}
+
+.theia-notification-panel__filter-button--active {
+    background: var(--theia-button-background, #0e639c);
+    color: var(--theia-button-foreground, #ffffff);
+    border-color: var(--theia-button-background, #0e639c);
+    font-weight: 600;
+}
+
+/* Список */
+.theia-notification-panel__list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.theia-notification-panel__list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.theia-notification-panel__list::-webkit-scrollbar-thumb {
+    background: var(--theia-scrollbarSlider-background, rgba(121, 121, 121, 0.4));
+}
+
+.theia-notification-panel__list::-webkit-scrollbar-thumb:hover {
+    background: var(--theia-scrollbarSlider-hoverBackground, rgba(100, 100, 100, 0.7));
+}
+
+/* Группа */
+.theia-notification-panel__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.theia-notification-panel__group-header {
+    padding: 6px 12px 3px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--theia-descriptionForeground, #999999);
+    border-bottom: 1px solid var(--theia-panel-border, #454545);
+    background: var(--theia-sideBarSectionHeader-background, #252526);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Элемент списка */
+.theia-notification-item {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--theia-panel-border, #454545);
+    transition: background-color 0.15s;
+}
+
+.theia-notification-item:hover {
+    background: var(--theia-list-hoverBackground, rgba(255, 255, 255, 0.05));
+}
+
+.theia-notification-item__severity-icon {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-top: 2px;
+}
+
+.theia-notification-item--severity-info .theia-notification-item__severity-icon {
+    color: var(--theia-foreground, #cccccc);
+}
+
+.theia-notification-item--severity-warning .theia-notification-item__severity-icon {
+    color: var(--theia-editorWarning-foreground, #cca700);
+}
+
+.theia-notification-item--severity-error .theia-notification-item__severity-icon {
+    color: var(--theia-errorForeground, #f48771);
+}
+
+.theia-notification-item__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.theia-notification-item__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.theia-notification-item__title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--theia-foreground, #cccccc);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+}
+
+.theia-notification-item__time {
+    font-size: 10px;
+    color: var(--theia-descriptionForeground, #999999);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.theia-notification-item__message {
+    font-size: 11px;
+    line-height: 1.3;
+    color: var(--theia-foreground, #cccccc);
+    word-break: break-word;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.theia-notification-item__actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.theia-notification-item__action-button {
+    padding: 2px 6px;
+    font-size: 10px;
+    flex: 0 0 auto;
+}
+
+.theia-notification-item__action-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Пустое состояние */
+.theia-notification-panel__empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 12px;
+    color: var(--theia-descriptionForeground, #999999);
+    font-style: italic;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Адаптивность для очень узкого сайдбара (< 200px) */
+@media (max-width: 200px) {
+    .theia-notification-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .theia-notification-item__severity-icon {
+        align-self: flex-start;
+    }
+
+    .theia-notification-item__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .theia-notification-item__time {
+        align-self: flex-start;
+    }
+}

@@ -19,6 +19,9 @@ import {
     NOTIFICATION_SERVICE_PATH 
 } from '../common/protocol';
 
+import '../../src/browser/styles/notification-toast.css';
+import '../../src/browser/styles/notification-panel.css';
+
 export default new ContainerModule(bind => {
     // Клиент
     bind(NotificationClientImpl).toSelf().inSingletonScope();

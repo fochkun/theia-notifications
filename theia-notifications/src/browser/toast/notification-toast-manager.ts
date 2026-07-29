@@ -7,7 +7,6 @@ import { NotificationToast } from './notification-toast';
 import { NOTIFICATION_TOAST_CLASSES } from './notification-toast-classes';
 import * as React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import './notification-toast.css';
 
 @injectable()
 export class NotificationToastManager implements FrontendApplicationContribution, Disposable {

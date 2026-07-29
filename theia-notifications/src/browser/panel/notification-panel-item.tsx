@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Notification, NotificationAction } from '../../common/notification-types';
-import styles from './notification-panel.module.css';
+import { NOTIFICATION_PANEL_CLASSES } from './notification-panel-classes';
 
 interface NotificationItemProps {
     notification: Notification;
@@ -21,28 +21,30 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({ notification
         : notification.severity === 'warning' ? '▲'
         : '✕';
 
-    const severityClass = notification.severity === 'info' ? styles.severityInfo
-        : notification.severity === 'warning' ? styles.severityWarning
-        : styles.severityError;
+    const severityClass = notification.severity === 'info'
+        ? NOTIFICATION_PANEL_CLASSES.severityInfo
+        : notification.severity === 'warning'
+            ? NOTIFICATION_PANEL_CLASSES.severityWarning
+            : NOTIFICATION_PANEL_CLASSES.severityError;
 
     return (
-        <div className={styles.item}>
-            <div className={`${styles.severityIcon} ${severityClass}`}>{severityIcon}</div>
-            <div className={styles.itemContent}>
-                <div className={styles.itemHeader}>
-                    <span className={styles.itemTitle}>{notification.title}</span>
-                    <span className={styles.itemTime}>{formatTime(notification.timestamp)}</span>
+        <div className={`${NOTIFICATION_PANEL_CLASSES.item} ${severityClass}`}>
+            <div className={NOTIFICATION_PANEL_CLASSES.itemSeverityIcon}>{severityIcon}</div>
+            <div className={NOTIFICATION_PANEL_CLASSES.itemContent}>
+                <div className={NOTIFICATION_PANEL_CLASSES.itemHeader}>
+                    <span className={NOTIFICATION_PANEL_CLASSES.itemTitle}>{notification.title}</span>
+                    <span className={NOTIFICATION_PANEL_CLASSES.itemTime}>{formatTime(notification.timestamp)}</span>
                 </div>
-                <div className={styles.itemMessage}>{notification.message}</div>
+                <div className={NOTIFICATION_PANEL_CLASSES.itemMessage}>{notification.message}</div>
                 {notification.actions && notification.actions.length > 0 && (
-                    <div className={styles.itemActions}>
+                    <div className={NOTIFICATION_PANEL_CLASSES.itemActions}>
                         {notification.actions.map(action => {
                             const key = `${notification.id}:${action.id}`;
                             const isInvoked = invokedActions.has(key);
                             return (
                                 <button
                                     key={action.id}
-                                    className={`theia-button secondary ${styles.itemActionButton}`}
+                                    className={`theia-button secondary ${NOTIFICATION_PANEL_CLASSES.itemActionButton}`}
                                     disabled={isInvoked}
                                     onClick={() => onAction(notification.id, action)}
                                     aria-label={`${action.label} for ${notification.title}`}

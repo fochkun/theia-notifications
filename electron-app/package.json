@@ -20,7 +20,8 @@
   },
   "devDependencies": {
     "@theia/cli": "1.73.1",
-    "electron": "39.8.7"
+    "electron": "39.8.7",
+    "native-keymap": "^2.5.0"
   },
   "scripts": {
     "bundle": "npm run rebuild && theia build --mode development",

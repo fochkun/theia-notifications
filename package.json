@@ -24,9 +24,5 @@
   },
   "workspaces": [
     "theia-notifications", "browser-app", "electron-app"
-  ],
-  "resolutions": {
-    "native-keymap": "npm:empty-npm-package@1.0.0",
-    "drivelist": "npm:empty-npm-package@1.0.0"
-   }
+  ]
 }

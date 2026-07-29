@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Notification } from '../../common/notification-types';
 import { NotificationItem } from './notification-panel-item';
-import styles from './notification-panel.module.css';
 import { getDateGroup } from './notification-panel.utils';
 import { DateGroup, FilterType, NotificationPanelViewProps } from './notification-panel.types';
+import './notification-panel.module.css';
 
 
 const GROUP_LABELS: Record<DateGroup, string> = {

@@ -4,9 +4,10 @@ import { FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { NotificationFrontendService } from '../rpc/notification-frontend-service';
 import { Notification, NotificationAction } from '../../common/notification-types';
 import { NotificationToast } from './notification-toast';
+import { NOTIFICATION_TOAST_CLASSES } from './notification-toast-classes';
 import * as React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import './notification-toast.module.css';
+import './notification-toast.css';
 
 @injectable()
 export class NotificationToastManager implements FrontendApplicationContribution, Disposable {
@@ -19,7 +20,7 @@ export class NotificationToastManager implements FrontendApplicationContribution
 
     onStart(): void {
         this.container = document.createElement('div');
-        this.container.className = styles.container;
+        this.container.className = NOTIFICATION_TOAST_CLASSES.container;
         document.body.appendChild(this.container);
 
         this.toDispose.push(
@@ -34,10 +35,9 @@ export class NotificationToastManager implements FrontendApplicationContribution
 
         const toastElement = document.createElement('div');
         this.container.appendChild(toastElement);
-
         const root = createRoot(toastElement);
-        this.toasts.set(notification.id, { root, notification });
 
+        this.toasts.set(notification.id, { root, notification });
         root.render(
             React.createElement(NotificationToast, {
                 notification,
@@ -70,7 +70,6 @@ export class NotificationToastManager implements FrontendApplicationContribution
         if (this.container && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);
         }
-
         this.toDispose.dispose();
     }
 }

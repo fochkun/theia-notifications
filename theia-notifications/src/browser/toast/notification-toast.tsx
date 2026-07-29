@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Notification, NotificationAction } from '../../common/notification-types';
-import './notification-toast.module.css';
+import { NOTIFICATION_TOAST_CLASSES } from './notification-toast-classes';
+import './notification-toast.css';
 
 interface NotificationToastProps {
     notification: Notification;
@@ -9,10 +10,10 @@ interface NotificationToastProps {
     onActionInvoked: (action: NotificationAction) => void;
 }
 
-export const NotificationToast: React.FC<NotificationToastProps> = ({ 
-    notification, 
-    onClose, 
-    onActionInvoked 
+export const NotificationToast: React.FC<NotificationToastProps> = ({
+    notification,
+    onClose,
+    onActionInvoked
 }) => {
     const [isVisible, setIsVisible] = useState(true);
     const timeoutRef = useRef<number | null>(null);
@@ -54,28 +55,28 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
         handleClose();
     };
 
-    const severityClass = notification.severity === 'info' ? styles.toastSeverityInfo :
-                          notification.severity === 'warning' ? styles.toastSeverityWarning :
-                          styles.toastSeverityError;
-                          
-    const animationClass = isVisible ? styles.toastEnter : styles.toastExit;
+    const severityClass =
+        notification.severity === 'info' ? NOTIFICATION_TOAST_CLASSES.severityInfo :
+        notification.severity === 'warning' ? NOTIFICATION_TOAST_CLASSES.severityWarning :
+        NOTIFICATION_TOAST_CLASSES.severityError;
+
+    const animationClass = isVisible ? NOTIFICATION_TOAST_CLASSES.enter : NOTIFICATION_TOAST_CLASSES.exit;
 
     return (
-        <div 
-            className={`${styles.toast} ${severityClass} ${animationClass}`}
+        <div
+            className={`${NOTIFICATION_TOAST_CLASSES.toast} ${severityClass} ${animationClass}`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className={styles.content}>
-                <div className={styles.title}>{notification.title}</div>
-                <div className={styles.message}>{notification.message}</div>
-                
+            <div className={NOTIFICATION_TOAST_CLASSES.content}>
+                <div className={NOTIFICATION_TOAST_CLASSES.title}>{notification.title}</div>
+                <div className={NOTIFICATION_TOAST_CLASSES.message}>{notification.message}</div>
                 {notification.actions && notification.actions.length > 0 && (
-                    <div className={styles.actions}>
+                    <div className={NOTIFICATION_TOAST_CLASSES.actions}>
                         {notification.actions.map(action => (
                             <button
                                 key={action.id}
-                                className={`theia-button secondary ${styles.actionButton}`}
+                                className={`theia-button secondary ${NOTIFICATION_TOAST_CLASSES.actionButton}`}
                                 onClick={() => handleActionClick(action)}
                             >
                                 {action.label}
@@ -84,10 +85,9 @@ export const NotificationToast: React.FC<NotificationToastProps> = ({
                     </div>
                 )}
             </div>
-
             {notification.severity === 'error' && (
-                <button 
-                    className={`theia-button ${styles.closeButton}`}
+                <button
+                    className={`theia-button ${NOTIFICATION_TOAST_CLASSES.closeButton}`}
                     onClick={handleClose}
                     aria-label="Close notification"
                 >
